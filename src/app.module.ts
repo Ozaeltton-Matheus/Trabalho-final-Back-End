@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 
+import { DuplasModule } from './duplas/duplas.module';
 import { TorneiosModule } from './torneios/torneios.module';
 import { ClimaModule } from '../clima/clima.module';
 
@@ -19,6 +20,7 @@ import { ClimaModule } from '../clima/clima.module';
       isGlobal: true,
     }),
 
+    DuplasModule,
     TorneiosModule,
     ClimaModule,
   ],
