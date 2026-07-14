@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TorneiosService } from './torneios.service';
 import { CreateTorneioDto } from './dto/create-torneio.dto';
 import { UpdateTorneioDto } from './dto/update-torneio.dto';
@@ -19,16 +27,16 @@ export class TorneiosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.torneiosService.findOne(+id);
+    return this.torneiosService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTorneioDto: UpdateTorneioDto) {
-    return this.torneiosService.update(+id, updateTorneioDto);
+    return this.torneiosService.update(id, updateTorneioDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.torneiosService.remove(+id);
+    return this.torneiosService.remove(id);
   }
 }
