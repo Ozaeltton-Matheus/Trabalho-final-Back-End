@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DuplasService } from './duplas.service';
 import { CreateDuplaDto } from './dto/create-dupla.dto';
 import { UpdateDuplaDto } from './dto/update-dupla.dto';
@@ -19,16 +27,16 @@ export class DuplasController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.duplasService.findOne(+id);
+    return this.duplasService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDuplaDto: UpdateDuplaDto) {
-    return this.duplasService.update(+id, updateDuplaDto);
+    return this.duplasService.update(id, updateDuplaDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.duplasService.remove(+id);
+    return this.duplasService.remove(id);
   }
 }
