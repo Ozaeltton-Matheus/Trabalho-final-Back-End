@@ -1,19 +1,21 @@
-// modelo de dados para a entidade partidas 
+// modelo de dados para a entidade partidas
 
-export class Partidas{
-    id : number;
+export class Partidas {
+  id: number;
 
-    dataHora : Date;
+  status: 'AGENDADA' | 'EM_ANDAMENTO' | 'FINALIZADA';
 
-    local : string;
+  dataHora: Date;
 
-    placarDuplaA : number;
+  local: string;
 
-    placarDuplaB : number;
+  placarDuplaA: number;
 
-    torneioId : number;
+  placarDuplaB: number;
 
-    duplaAId : number;
+  torneioId: number;
 
-    duplaBId : number;
+  duplaAId: number;
+
+  duplaBId: number;
 }
