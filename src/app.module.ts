@@ -7,6 +7,9 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { DuplasModule } from './duplas/duplas.module';
 import { TorneiosModule } from './torneios/torneios.module';
 import { ClimaModule } from '../clima/clima.module';
+import { PartidasService } from './partidas/partidas.service';
+import { PartidasController } from './partidas/partidas.controller';
+import { PartidasModule } from './partidas/partidas.module';
 
 @Module({
   imports: [
@@ -23,8 +26,9 @@ import { ClimaModule } from '../clima/clima.module';
     DuplasModule,
     TorneiosModule,
     ClimaModule,
+    PartidasModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, PartidasController],
+  providers: [AppService, PartidasService],
 })
 export class AppModule {}
