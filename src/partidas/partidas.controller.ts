@@ -27,6 +27,11 @@ export class PartidasController {
     return this.partidasService.buscarPorId(Number(id));
   }
 
+  @Get(':id/clima')
+  buscarClima(@Param('id') id: string) {
+    return this.partidasService.buscarClimaPorPartida(Number(+id));
+  }
+
   @Post()
   criarPartida(@Body() dto: CreatePartidaDto) {
     return this.partidasService.create(dto);

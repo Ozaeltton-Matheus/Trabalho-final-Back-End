@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import {HttpModule} from '@nestjs/axios';
 import { ClimaService } from './clima.service';
 import { ClimaController } from './clima.controller';
+import { HttpModule } from '@nestjs/axios';
+
 @Module({
-    imports: [HttpModule],
-    providers: [ClimaService],
-    controllers: [ClimaController]
+  imports: [HttpModule],
+  controllers: [ClimaController],
+  providers: [ClimaService],
+  exports: [ClimaService], 
 })
-export class ClimaModule {
-    
-}
+export class ClimaModule {}

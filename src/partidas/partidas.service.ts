@@ -3,9 +3,10 @@ import { Partidas } from './entities/partidas.entity';
 import { CreatePartidaDto } from './dto/create-partida.dto';
 import { UpdatePartidaDto } from './dto/update-partida.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
-
+import { ClimaService } from '../../clima/clima.service';
 @Injectable()
 export class PartidasService {
+  constructor(private readonly climaService: ClimaService) {}
   private partidas: Partidas[] = [];
 
   private id = 1;
@@ -53,5 +54,11 @@ export class PartidasService {
       throw new NotFoundException(`A partida com ID ${id} não foi encontrada`);
     }
     this.partidas.splice(indice, 1);
+  }
+
+  async buscarClimaPorPartida(id: number){
+    const partida = this.buscarPorId(id);
+
+    return this.climaService.buscarClima(partida.local);
   }
 }
