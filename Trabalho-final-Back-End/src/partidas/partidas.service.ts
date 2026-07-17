@@ -56,7 +56,7 @@ export class PartidasService {
     this.partidas.splice(indice, 1);
   }
 
-  async buscarClimaPorPartida(id: number) {
+  async buscarClimaPorPartida(id: number){
     const partida = this.buscarPorId(id);
 
     return this.climaService.buscarClima(partida.local);
