@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena Admin - Gestão de Torneios Esportivos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+        
+        <!-- Barra de Navegação Lateral -->
+        <aside>
+            <div>
+                <h2>Arena Admin</h2>
+                <button class="menu-btn ativo" onclick="mudarPainel('cadastros', this)">Cadastros Base</button>
+                <button class="menu-btn" onclick="mudarPainel('inscricoes', this)"> Inscrições (Duplas)</button>
+                <button class="menu-btn" onclick="mudarPainel('partidas', this)"> Partidas & Súmulas</button>
+                <button class="menu-btn" onclick="mudarPainel('classificacao', this)"> Classificação</button>
+                <button class="menu-btn" onclick="mudarPainel('noticias', this)"> Notícias</button>
+            </div>
+            <button class="btn-logout" id="btn-logout">Sair</button>
+        </aside>
+
+        <!-- Corpo Principal da Tela -->
+        <main>
+            <!-- Painel Central Dinâmico -->
+            <section class="painel-principal">
+                
+                <!-- ABA 1: CADASTROS BASE (Modalidades e Usuários) -->
+                <div id="aba-cadastros" class="aba-conteudo">
+                    <h2 style="margin-bottom: 20px;">Configuração de Cadastros Base</h2>
+                    
+                    <!-- 1. Cadastro de Modalidades -->
+                    <div class="card-item">
+                        <h3 style="margin-bottom: 10px;"> Cadastrar Nova Modalidade</h3>
+                        <form id="form-modalidade" class="grid-formulario">
+                            <div class="form-grupo">
+                                <label for="mod-nome">Nome da Modalidade</label>
+                                <input id="mod-nome" type="text" placeholder="Ex: Futebol de Areia" required>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="mod-tipo">Tipo</label>
+                                <select id="mod-tipo" required>
+                                    <option value="coletivo">Coletivo</option>
+                                    <option value="individual">Individual</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-acao cheio" style="grid-column: span 2;">Salvar Modalidade</button>
+                        </form>
+                    </div>
+
+                    <!-- 2. Cadastro Geral de Usuários (DTO de Ozaeltton: CreateUserDto) -->
+                    <div class="card-item">
+                        <h3 style="margin-bottom: 10px;"> Cadastrar Novo Usuário</h3>
+                        <form id="form-usuario" class="grid-formulario">
+                            <div class="form-grupo">
+                                <label for="usr-nome">Nome Completo</label>
+                                <input id="usr-nome" type="text" placeholder="Ex: Ana Lima" required>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="usr-email">E-mail</label>
+                                <input id="usr-email" type="email" placeholder="ana@email.com" required>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="usr-telefone">Telefone</label>
+                                <input id="usr-telefone" type="text" placeholder="(86) 99999-9999" required>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="usr-cpf">CPF</label>
+                                <input id="usr-cpf" type="text" placeholder="000.000.000-00" required>
+                            </div>
+                            <div class="form-grupo cheio">
+                                <label for="usr-senha">Senha de Acesso</label>
+                                <input id="usr-senha" type="password" placeholder="Sua senha secreta" required>
+                            </div>
+                            <button type="submit" class="btn-acao" style="grid-column: span 2; margin-top: 10px;">Salvar Usuário</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ABA 2: INSCRIÇÕES (Cadastro de Duplas + Upload de Imagem - Rota do Abnoan + Seu Upload) -->
+                <div id="aba-inscricoes" class="aba-conteudo escondido">
+                    <h2>Inscrições de Duplas no Torneio</h2>
+                    <p style="color: #6b7280; margin-bottom: 20px;">Inscreva uma nova dupla enviando o comprovante ou brasão oficial.</p>
+                    
+                    <div class="card-item">
+                        <h3 style="margin-bottom: 10px;">Cadastrar Nova Dupla</h3>
+                        <!-- Form configurado para enviar Multipart (Sua rota de Upload) -->
+                        <form id="form-dupla" enctype="multipart/form-data">
+                            <div class="grid-formulario">
+                                <div class="form-grupo">
+                                    <label for="dup-nome">Nome da Dupla</label>
+                                    <!-- Mapeado diretamente para o CreateDuplaDto -->
+                                    <input id="dup-nome" name="nomeDaDupla" type="text" placeholder="Ex: Guga e Meligeni" required>
+                                </div>
+                                <div class="form-grupo">
+                                    <label for="dup-torneio">Selecionar Torneio</label>
+                                    <!-- Mapeado para o torneioId do CreateDuplaDto -->
+                                    <select id="dup-torneio" name="torneioId" required>
+                                        <option value="">Selecione um Torneio...</option>
+                                        <option value="torneio-1">Torneio de Verão</option>
+                                        <option value="torneio-2">Open de Beach Tennis</option>
+                                    </select>
+                                </div>
+                                <div class="form-grupo cheio">
+                                    <label for="dup-foto">Brasão / Foto da Dupla (Upload - Máx 2MB, apenas imagens)</label>
+                                    <!-- 'name="foto"' é mapeado exatamente no FileInterceptor('foto') no NestJS -->
+                                    <input type="file" id="dup-foto" name="foto" accept="image/png, image/jpeg, image/jpg" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-acao">Salvar Dupla com Foto</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ABA 3: PARTIDAS & SÚMULAS (Marcos) -->
+                <div id="aba-partidas" class="aba-conteudo escondido">
+                    <h2>Gestão de Partidas, Súmulas e Eventos</h2>
+                    <p style="color: #6b7280; margin-bottom: 20px;">Gerencie o andamento dos jogos, pontuação e condições de jogo.</p>
+
+                    <!-- Agendar Novo Jogo -->
+                    <div class="card-item">
+                        <h3 style="margin-bottom: 10px;"> Agendar Nova Partida</h3>
+                        <form id="form-partida" class="grid-formulario">
+                            <div class="form-grupo">
+                                <label for="part-equipeA">Dupla Mandante</label>
+                                <select id="part-equipeA" required><option value="">Selecione...</option></select>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="part-equipeB">Dupla Visitante</label>
+                                <select id="part-equipeB" required><option value="">Selecione...</option></select>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="part-data">Data/Hora</label>
+                                <input id="part-data" type="datetime-local" required>
+                            </div>
+                            <button type="submit" class="btn-acao" style="grid-column: span 2;">Agendar Jogo</button>
+                        </form>
+                    </div>
+
+                    <!-- Listagem com Gestão de Estado e Súmulas -->
+                    <h3>Jogos Cadastrados</h3>
+                    <div id="lista-partidas" style="margin-top: 15px;">
+                        <!-- Gerado de forma dinâmica -->
+                    </div>
+                </div>
+
+                <!-- ABA 4: CLASSIFICAÇÃO -->
+                <div id="aba-classificacao" class="aba-conteudo escondido">
+                    <h2>Classificação Geral</h2>
+                    <p style="color: #6b7280; margin-bottom: 20px;">Visualização dinâmica de pontuações baseada nos resultados das partidas encerradas.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Dupla</th>
+                                <th>Pontos</th>
+                                <th>Vitórias</th>
+                                <th>Derrotas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-classificacao">
+                            <!-- Gerado dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ABA 5: NOTÍCIAS -->
+                <div id="aba-noticias" class="aba-conteudo escondido">
+                    <h2>Notícias do Torneio</h2>
+                    <p style="color: #6b7280; margin-bottom: 20px;">Publique informativos, comunicados e atualizações das rodadas.</p>
+                    
+                    <div class="card-item">
+                        <h3 style="margin-bottom: 10px;">Publicar Notícia</h3>
+                        <form id="form-noticia">
+                            <div class="form-grupo">
+                                <label for="not-titulo">Título da Notícia</label>
+                                <input id="not-titulo" type="text" required>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="not-conteudo">Conteúdo</label>
+                                <textarea id="not-conteudo" required></textarea>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="not-imagem">Imagem de Destaque (Opcional)</label>
+                                <input type="file" id="not-imagem" accept="image/*">
+                            </div>
+                            <button type="submit" class="btn-acao">Publicar</button>
+                        </form>
+                    </div>
+
+                    <h3>Feed do Torneio</h3>
+                    <div id="feed-noticias" style="margin-top: 15px;">
+                        <!-- Gerado dinamicamente -->
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Painel Lateral Direita (Clima & Preferências - Marcos) -->
+            <section class="painel-lateral">
+                <div>
+                    <h3 style="margin-bottom: 10px;">Clima Local</h3>
+                    <div id="clima-widget" style="padding: 10px; background: white; border-radius: 6px; font-size: 0.9rem; border: 1px solid #e5e7eb;">
+                        Carregando informações do clima...
+                    </div>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 10px;">Preferências</h3>
+                    <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="check-clima" style="width: auto;"> Ativar widget climática (Cookie)
+                    </label>
+                </div>
+            </section>
+        </main>
+
+        <script src="app.js"></script>
+    </div>
+
+</body>
+</html>
